@@ -1,25 +1,43 @@
-#!groovy
-// Check ub1 properties
-properties([disableConcurrentBuilds()])
-
 pipeline {
-    agent { 
-        label 'master'
-        }
-    options {
-        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
-        timestamps()
+    agent any
+    environment {
+      PROJECT_NAME = "Neptun"
+      OWNER_NAME   = "Denis Astahov"
     }
+
     stages {
-        stage("First step") {
+        stage('1-Build') {
             steps {
-                sh 'ssh fedirt@192.168.1.77 \'hostname\''
+                echo "Start of Stage Build..."
+                echo "Building......."
+                echo "End of Stage Build..."
             }
         }
-        stage("Second step") {
+        stage('2-Test') {
             steps {
-                sh 'ssh fedirt@192.168.1.77 \'uptime\''
+                echo "Start of Stage Test..."
+                echo "Testing......."
+                echo "Privet ${PROJECT_NAME}"
+                echo "Owner is ${OWNER_NAME}"
+                echo "End of Stage Build..."
             }
         }
+        stage('3-Deploy') {
+            steps {
+                echo "Start of Stage Deploy..."
+                echo "Deploying......."
+                sh "ls -la"
+                sh '''
+                   echo "Line1"
+                   echo "Line2"
+                '''
+                echo "End of Stage Build..."
+            }
+        }
+        stage('4-Celebrate') {
+            steps {
+                echo "CONGRATULYACIYA!"
+            }
+        }	
     }
 }
